@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Predicting precipitation in Vancouver &#8212; Predicting precipitation in Vancouver</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'raincouver_prediction_report3';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicting precipitation in Vancouver</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    Predicting precipitation in Vancouver
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/raincouver_prediction_report3.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Predicting precipitation in Vancouver</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Predicting precipitation in Vancouver</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-results">2. Methods &amp; Results</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">2.1 Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#column-description">Column description</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">2.2 Exploratory Data Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-model-development">2.3 Classification Model Development</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">3. Discussion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="predicting-precipitation-in-vancouver">
+<h1>Predicting precipitation in Vancouver<a class="headerlink" href="#predicting-precipitation-in-vancouver" title="Permalink to this heading">#</a></h1>
+<p>by Dan Zhang, Doris (Yun Yi) Cai, Hayley (Yi) Han &amp; Sivakorn (Oak) Chong 2023/11/30</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h1>
+<p>Our project investigates the prediction of daily precipitation in Vancouver using machine learning methods. Using a dataset spanning from 1990 to 2023, we explored the predictive power of some key environmental and cliamte features such as temperature, wind speed, and evapotranspiration. Our results suggest the best classification model is Support Vector Machine with Radial Basis Fuction (SVM RBF) model with the hyperparameter C=10.0. The model achieved a notable F1 score of 0.87 on the positive class (precipitation is present) when generalized to the unseen data, suggesting a high accuracy in precipitation prediction. We also explored feature importance, showing ET₀ reference evapotranspiration and the cosine transformation of months as robust predictors. Hyperparameter optimization did not make improvement to our curren model, indicating the potential need for feature engineering or incoportating more features. Our project presents a reliable model for predicting precipitation with potential practical applications in various fields.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="introduction">
+<h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
+<p>Prediction of daily precipitation is a fundamental aspect of meteorological studies <span id="id1">[<a class="reference internal" href="#id7" title="Mark New, Martin Todd, Mike Hulme, and Phil Jones. Precipitation measurements and trends in the twentieth century. International Journal of Climatology: A Journal of the Royal Meteorological Society, 21(15):1889–1922, 2001.">New <em>et al.</em>, 2001</a>]</span>. Accurate precipitation prediction is crucial for agriculture, water resources management, as well as daily activities of people. Specifically, in a geographically and climatically diverse region like Vancouver, predicting precipitation is vital for people to prepare for extreme weather events, reducing hazards and minimizing property damage.</p>
+<p>In this project, we aim to predict the occurrence of daily precipitation in Vancouver using machine learning (ML) classification methods <span id="id2">[<a class="reference internal" href="#id8" title="EG Ortiz-García, S Salcedo-Sanz, and C Casanova-Mateo. Accurate precipitation prediction with support vector classifiers: a study including novel predictive variables and observational data. Atmospheric research, 139:128–136, 2014.">Ortiz-García <em>et al.</em>, 2014</a>]</span>. Specifically, our analysis utilizes a dataset containing daily precipitation information in Vancouver from 1990 to the present (i.e., 6 Nov, 2023). This dataset, sourced from Open-Meteo’s Historical Weather API <span id="id3">[<a class="reference internal" href="#id9" title="Patrick Zippenfenig. Open-meteo.com weather api. 2023. doi:https://doi.org/10.5281/ZENODO.7970649.">Zippenfenig, 2023</a>]</span>, includes a number of parameters relevant to precipitation prediction.
+Key parameters include month, daily temperature measures, wind speeds, wind direction, shortwave radiation, and ET₀ reference evapotranspiration. Specifically, shortwave radiation represents the sum of solar energy received in a day; ET₀ reference evapotranspiration provides an indication of the atmospheric demand for moisture (i.e., higher relative humidity reduces ET₀ ); and month is also included as a variable since it accounts for the seasonal variations in precipitation <span id="id4">[<a class="reference internal" href="#id10" title="Jeremy S Pal, Eric E Small, and Elfatih AB Eltahir. Simulation of regional-scale water and energy budgets: representation of subgrid cloud and precipitation processes within regcm. Journal of Geophysical Research: Atmospheres, 105(D24):29579–29594, 2000.">Pal <em>et al.</em>, 2000</a>]</span>. This project may contributes insights into accurate forecast of the precipitation in Vancouver.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="methods-results">
+<h1>2. Methods &amp; Results<a class="headerlink" href="#methods-results" title="Permalink to this heading">#</a></h1>
+<section id="data">
+<h2>2.1 Data<a class="headerlink" href="#data" title="Permalink to this heading">#</a></h2>
+<p>The dataset used in this project was sourced from Open-Meteo’s Historical Weather API <span id="id5">[<a class="reference internal" href="#id9" title="Patrick Zippenfenig. Open-meteo.com weather api. 2023. doi:https://doi.org/10.5281/ZENODO.7970649.">Zippenfenig, 2023</a>]</span>, which can be found <a class="reference external" href="https://open-meteo.com/en/docs/historical-weather-api#latitude=49.2497&amp;longitude=-123.1193&amp;hourly=weather_code&amp;daily=weather_code,temperature_2m_max,temperature_2m_min,temperature_2m_mean,apparent_temperature_max,apparent_temperature_min,apparent_temperature_mean,sunrise,sunset,precipitation_sum,rain_sum,snowfall_sum,precipitation_hours,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&amp;timezone=auto">here</a>. Each row in the data set represents daily precipitation information in Vancouver with  various parameters relevant to precipitation. Parameters included in the following analysis are listed with a short description as follows.</p>
+<section id="column-description">
+<h3>Column description<a class="headerlink" href="#column-description" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature_2m_max</span></code>: Maximum daily air temperature at 2 meters above ground (°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature_2m_min</span></code>: Minimum daily air temperature at 2 meters above ground (°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature_2m_mean</span></code>: Mean daily air temperature at 2 meters above ground (°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apparent_temperature_max</span></code>: Maximum daily apparent temperature (°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apparent_temperature_min</span></code>: Minimum daily apparent temperature (°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apparent_temperature_mean</span></code>: Mean daily apparent temperature (°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">precipitation_sum</span></code>: Sum of daily precipitation (including rain, showers and snowfall) (mm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wind_speed_10m_max</span></code>: Maximum wind speed on a day (km/h)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wind_gusts_10m_max</span></code>: Maximum wind gusts on a day (km/h)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wind_direction_10m_dominant</span></code>: Dominant wind direction (°)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shortwave_radiation_sum</span></code>: The sum of solar radiaion on a given day in Megajoules (MJ/m²)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">et0_fao_evapotranspiration</span></code>: Daily sum of ET₀ Reference Evapotranspiration of a well watered grass field (mm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">month</span></code>: Month of the record</p></li>
+</ul>
+</section>
+</section>
+<section id="exploratory-data-analysis">
+<h2>2.2 Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Permalink to this heading">#</a></h2>
+<p>All the features in our data are numeric. To look at how these features are distributed in order to decided appropiate data transformation method, we plotted the distribution of each numeric features (<a class="reference internal" href="#histogram-numeric-features"><span class="std std-numref">Figure 1</span></a>).</p>
+<p>The histograms for temperature variables (maximum, minimum, and mean temperatures at 2 meters above ground, and maximum, minimum, and mean apparent temperatures) generally show a bell-shaped distribution. The histogram for precipitation sums is highly skewed to the right, indicating that there are many days with low precipitation and fewer days with high precipitation. The wind speed and wind gusts also show right-skewed distributions, which is typical for wind speed data, where calm days are more common than extremely windy ones. The dominant wind direction histogram appears to be multimodal. Lastly, the shortwave radiation and the ET₀ Reference Evapotranspiration distribution also appear right-skewed. In summary, the distributions for these climate and environmental features are reasonable and there are no obvious anomalies or outliers that need for further data cleaning.</p>
+<figure class="align-default" id="histogram-numeric-features">
+<a class="reference internal image-reference" href="_images/histogram_numeric_features.png"><img alt="_images/histogram_numeric_features.png" src="_images/histogram_numeric_features.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Distributions for the climate and environmental features.</span><a class="headerlink" href="#histogram-numeric-features" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>We used a correlation heatmap to further examine the potential correlations between the features (<a class="reference internal" href="#correlation-heatmap"><span class="std std-numref">Figure 2</span></a>). The correlation heatmap indicates strong correlations among the temperature variables (maximum, minimum, and mean temperatures at 2 meters above ground and apparent temperatures), with coefficients close to 1. Thus, we used only <code class="docutils literal notranslate"><span class="pre">temperature_2m_mean</span></code> for analysis to avoid multicollinearity. Similarly, wind-related features (wind speed and wind gusts) also show a high degree of correlation. Therefore, we chose to keep the wind speed feature to reduce redundancy in the model.</p>
+<figure class="align-default" id="correlation-heatmap">
+<a class="reference internal image-reference" href="_images/correlation_heatmap.png"><img alt="_images/correlation_heatmap.png" src="_images/correlation_heatmap.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Correlation heatmap between the climate and environmental features.</span><a class="headerlink" href="#correlation-heatmap" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="classification-model-development">
+<h2>2.3 Classification Model Development<a class="headerlink" href="#classification-model-development" title="Permalink to this heading">#</a></h2>
+<p>Multiple models are tested and scored across four possible models (Decision Trees, Support Vector Machine, Logistic Regression and K-Nearest Neighbours). The features had been preprocessed through a pipeline with <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> tranformer before passing to fit the models. The transformer converts all numeric features into standard normal scale to mitigate potential adverse effects on performance arising from disparate feature scales. Considering the observed seasonal pattern in Vancouver precipitation data, we transformed the feature <code class="docutils literal notranslate"><span class="pre">month</span></code> to circular features <code class="docutils literal notranslate"><span class="pre">month_sin</span></code> and <code class="docutils literal notranslate"><span class="pre">month_cos</span></code> using the trigonometry functions (i.e. sine and cosine), aiming to capture this cylical nature of data. For each model, we run 5-fold cross validation and extract F1 score to identify the best performing class of model. The performace of each model is plotted below (<a class="reference internal" href="#model-comparison"><span class="std std-numref">Figure 3</span></a>).</p>
+<figure class="align-default" id="model-comparison">
+<a class="reference internal image-reference" href="_images/model_comparison.png"><img alt="_images/model_comparison.png" src="_images/model_comparison.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of model performance (F1) for predicting existance of rainfall in Vancouver.</span><a class="headerlink" href="#model-comparison" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>With the comparison, the Support Vector Machine with Radial Basis Function (SVM RBF) exhibited the most favorable performance, attaining a F1 score of 0.87. The next stage in our analytical pipeline involves the optimization of hyperparameters for this particular model, with the objective of further performance improvement.</p>
+<p>Before proceeding with this optimization, we assess the importance of individual feature. With the limitation of SVM RBF that it does not inherently provide direct measures of feature importance, we utilized the Logistic Regression analysis previously conducted to derived the relative importance of features based on their fitted coefficients. While the feature importance interpretation may not align precisely with that of the Support Vector Machine, it nonetheless provides valuable insights. Comparsion of features importance are displayed as below (<a class="reference internal" href="#feature-importance"><span class="std std-numref">Figure 4</span></a>). <code class="docutils literal notranslate"><span class="pre">evapotranspiration</span></code> exhibits the highest correlation with precipitation. This correlation aligns intuitively with that increased water evaporation corresponds to an increased likelihood of rainfall. It is observed that <code class="docutils literal notranslate"><span class="pre">month_cos</span></code> shows a strong correlation with existance of rain, whereas such correlation is not evident in the case of <code class="docutils literal notranslate"><span class="pre">month_sin</span></code>. The cosine value of month tends to coincide well with the seasons in Vancouver.</p>
+<figure class="align-default" id="feature-importance">
+<a class="reference internal image-reference" href="_images/Feature_importance.png"><img alt="_images/Feature_importance.png" src="_images/Feature_importance.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Comparison of importance of features for predicting existance of rainfall in Vancouver.</span><a class="headerlink" href="#feature-importance" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>We performed cross validation grid search to optimize SVM RBF model performance by tunning its hyperparameter C. The best performing SVM RBF model had C=10.0, and yielded the scoring metrics below (<a class="reference internal" href="#classification-report"><span class="std std-numref">Figure 5</span></a>). F1 score is consistent across the two classes (rain and no rain), which indicates that the model delivers an unbiased prediction.
+The weighted average F1-score of 0.87 is closer to that of the pre-tuned SVM RBF model. The model did not improve from hyperparameter optimization further with its default settings. Nonetheless, our current model performed well on predicting rain with 87% accuracy, with 8 features.</p>
+<figure class="align-default" id="classification-report">
+<a class="reference internal image-reference" href="_images/classification_report.png"><img alt="_images/classification_report.png" src="_images/classification_report.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The performance metrics of our final chosen model</span><a class="headerlink" href="#classification-report" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="discussion">
+<h1>3. Discussion<a class="headerlink" href="#discussion" title="Permalink to this heading">#</a></h1>
+<p>The results of this project demonstrate the utility of machine learning techniques, specifically Support Vector Machine with Radial Basis Function (SVM RBF), in predicting precipitation in Vancouver. The high F1 score of 0.87 achieved by the optimized SVM model demonstrates the model’s good performance in distinguishing between rainy and non-rainy days.</p>
+<p>Our results show the prominent predictive power of evapotranspiration on precipitation prediction. Furthermore, we showed that the inclusion of month as a circular feature effectively capture seasonal variations, which enhance the model’s predictive power.</p>
+<p>The lack of improvement from hyperparameter tuning suggests that the default settings of the SVM model could be already near optimal. Future model improvements may not benefit from hyperparameter tuning but rather from exploring additional feature engineering approaches. Next, we can explore regression models for quantitative precipitation prediction. In the meanwhile, examinig potential non-linear relationships between features and precipitation may facilitate further improvement.</p>
+<p>In summary, our project provides a model that can accurately predict Vancouver’s precipitation with a limited number of environemntal and climate features. This is a promising tool and could lead to more powerful precipitation forecasting, with its potential applications in agriculture, urban planning, and disaster preparedness.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h1>
+<div class="docutils container" id="id6">
+<dl class="citation">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">NTHJ01</a></span></dt>
+<dd><p>Mark New, Martin Todd, Mike Hulme, and Phil Jones. Precipitation measurements and trends in the twentieth century. <em>International Journal of Climatology: A Journal of the Royal Meteorological Society</em>, 21(15):1889–1922, 2001.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">OGarciaSSCM14</a></span></dt>
+<dd><p>EG Ortiz-García, S Salcedo-Sanz, and C Casanova-Mateo. Accurate precipitation prediction with support vector classifiers: a study including novel predictive variables and observational data. <em>Atmospheric research</em>, 139:128–136, 2014.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id4">PSE00</a></span></dt>
+<dd><p>Jeremy S Pal, Eric E Small, and Elfatih AB Eltahir. Simulation of regional-scale water and energy budgets: representation of subgrid cloud and precipitation processes within regcm. <em>Journal of Geophysical Research: Atmospheres</em>, 105(D24):29579–29594, 2000.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets">Zip23</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id5">2</a>)</span></dt>
+<dd><p>Patrick Zippenfenig. Open-meteo.com weather api. 2023. <a class="reference external" href="https://doi.org/https://doi.org/10.5281/ZENODO.7970649">doi:https://doi.org/10.5281/ZENODO.7970649</a>.</p>
+</dd>
+</dl>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Predicting precipitation in Vancouver</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-results">2. Methods &amp; Results</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">2.1 Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#column-description">Column description</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-data-analysis">2.2 Exploratory Data Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-model-development">2.3 Classification Model Development</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">3. Discussion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dan Zhang, Doris (Yun Yi) Cai, Hayley (Yi) Han & Sivakorn (Oak) Chong
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
